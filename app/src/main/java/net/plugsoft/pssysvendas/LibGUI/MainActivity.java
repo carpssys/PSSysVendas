@@ -1,7 +1,6 @@
 package net.plugsoft.pssysvendas.LibGUI;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -16,14 +15,13 @@ import net.plugsoft.pssysvendas.Controllers.EmpresaController;
 import net.plugsoft.pssysvendas.LibClass.Callback.EmpresaCallback;
 import net.plugsoft.pssysvendas.LibClass.Empresa;
 import net.plugsoft.pssysvendas.R;
-import net.plugsoft.pssysvendas.Services.EmpresaService;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements EmpresaCallback {
+public class MainActivity extends AppCompatActivity  implements EmpresaCallback{
     // "http://gestorapi.plugsoft.net/";
     // "http://192.168.0.188:50110/"
-    private final String BASE_URL = "http://192.168.0.188:50110/";
+    private final String BASE_URL = "http://gestorapi.plugsoft.net/";
 
     private ImageButton imgBtn;
 
@@ -45,9 +43,7 @@ public class MainActivity extends AppCompatActivity implements EmpresaCallback {
     @Override
     protected void onStart() {
         super.onStart();
-
-        //getEmpresas();
-
+        getEmpresa("12801594000119");
     }
 
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
@@ -60,25 +56,25 @@ public class MainActivity extends AppCompatActivity implements EmpresaCallback {
             }
         });
 
-    private void getEmpresas() {
+    private void getEmpresa(String cnpj) {
         try {
             EmpresaController empresaController = new EmpresaController(this, BASE_URL);
-            empresaController.getEmpresa(this, 378);
-        }
-        catch (Exception e) {
-
+            empresaController.getEmpresa(this, cnpj);
+        } catch (Exception e) {
+            Toast.makeText(this, "ERRO: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     public void onGetEmpresasSuccess(List<Empresa> empresas) {
-        if(!empresas.isEmpty()) {
-            Toast.makeText(this, empresas.size(), Toast.LENGTH_SHORT).show();
-        }
+
     }
 
     @Override
     public void onGetEmpresaSuccess(Empresa empresa) {
-
+        if(empresa != null) {
+            Toast.makeText(this, "Empresa: " + empresa.getEmpNome(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

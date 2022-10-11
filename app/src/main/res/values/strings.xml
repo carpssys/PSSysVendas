@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PSSys Vendas</string>
+    <string name="lbl_empresa">Empresa:</string>
 </resources>

@@ -59,6 +59,37 @@
                 }
             });
         }
+
+        // Retorna a empresa pelo CNPJ
+        public void getEmpresa(final EmpresaCallback callback, String cnpj) throws Exception {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(Empresa.class, new EmpresaDeserializer())
+                    .create();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+
+            RetrofitServices empresaService = retrofit.create(RetrofitServices.class);
+
+            Call<Empresa> empresa = empresaService.getEmpresa(cnpj);
+            empresa.enqueue(new Callback<Empresa>() {
+                @Override
+                public void onResponse(Call<Empresa> call, Response<Empresa> response) {
+                    if(response.isSuccessful()) {
+                        callback.onGetEmpresaSuccess(response.body());
+                    } else {
+                        callback.onEmpresaFailure("ERRO: " + response.code() + " - " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Empresa> call, Throwable t) {
+                    Toast.makeText(_context, "ERRO: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
         // Retorna as empresas habilitadas na nuvem
         public void getEmpresas(final EmpresaCallback callback) throws Exception {
                 Gson gson = new GsonBuilder()
