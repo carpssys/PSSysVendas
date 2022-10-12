@@ -3,6 +3,7 @@ package net.plugsoft.pssysvendas.LibGUI;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -44,6 +45,9 @@ public class MainActivity extends AppCompatActivity  implements EmpresaCallback{
     protected void onStart() {
         super.onStart();
         getEmpresa("12801594000119");
+        Intent intent = new Intent(MainActivity.this, RomaneioActivity.class);
+        startActivity(intent);
+
     }
 
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
