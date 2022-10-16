@@ -32,6 +32,16 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
     protected void onStart() {
         super.onStart();
         getRomaneio(72);
+        try {
+            if(Util.isRomaneioValid("16/10/2022")) {
+                Toast.makeText(this, "Romaneio Válido!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Romaneio Vencido!", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Métodos privados das funcionalidades
@@ -49,6 +59,7 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
     public void onGetRomaneioSuccess(Romaneio romaneio) {
         if(romaneio != null) {
             Toast.makeText(this, "Situação: " + Util.getSituacaoRomaneio(romaneio.getRomStatus()), Toast.LENGTH_SHORT).show();
+
         }
     }
 

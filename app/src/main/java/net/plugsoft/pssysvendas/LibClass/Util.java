@@ -1,13 +1,85 @@
 package net.plugsoft.pssysvendas.LibClass;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import static java.time.LocalDate.*;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Util {
-    // Verifica se tem internet e ou acesso a dados
-    public boolean hasConnectivity() {
+    private final String QR_ROMANEIO = "qr_romaneio";
+
+    // Grava dados do romaneio a ser entregue
+    public void saveDadosRomaneio(Context context, QrCodeToken qrCodeToken) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(QR_ROMANEIO, MODE_PRIVATE).edit();
+        editor.putInt("id", qrCodeToken.getRomKey());
+        editor.putString("cnpj", qrCodeToken.getCnpj());
+        editor.putString("dtExp", qrCodeToken.getDtExp());
+
+        editor.commit();
+    }
+
+    // Le dados do romaneio vigente
+    public QrCodeToken getDadosRomaneio(Context context) {
+        QrCodeToken qrCodeToken = new QrCodeToken();
+        SharedPreferences dadosRomaneio = context.getSharedPreferences(QR_ROMANEIO, MODE_PRIVATE);
+        if(dadosRomaneio.contains("id")) {
+            qrCodeToken.setRomKey(dadosRomaneio.getInt("id", 0));
+        }
+        if(dadosRomaneio.contains("cnpj")) {
+            qrCodeToken.setCnpj(dadosRomaneio.getString("cnpj", ""));
+        }
+        if(dadosRomaneio.contains("dtExp")) {
+            qrCodeToken.setDtExp(dadosRomaneio.getString("dtExp", "01/01/1900"));
+        }
+        return qrCodeToken;
+    }
+
+    // Verifica validade do romaneio
+    public static boolean isRomaneioValid(String dtExp) throws Exception{
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar _dtExp = DateToCalendar(sdf.parse(dtExp), true);
+        Calendar _dtHoje = DateToCalendar(new Date(), true);
+        //_dtHoje.add(Calendar.DAY_OF_MONTH, 1);
+        if(_dtExp.getTime().compareTo(_dtHoje.getTime()) == 0) {
+            return true;
+        }
+        if(_dtHoje.getTime().after(_dtExp.getTime())) {
+            return false;
+        }
         return true;
+    }
+
+    public static Calendar DateToCalendar(Date date, boolean setTimeToZero){
+        Calendar calendario = Calendar.getInstance();
+        calendario.setTime(date);
+        if(setTimeToZero){
+            calendario.set(Calendar.HOUR_OF_DAY, 0);
+            calendario.set(Calendar.MINUTE, 0);
+            calendario.set(Calendar.SECOND, 0);
+            calendario.set(Calendar.MILLISECOND, 0);
+        }
+        return calendario;
+    }
+
+    // Verifica se tem internet e ou acesso a dados
+    public static boolean hasConnectivity(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo ni = cm.getActiveNetworkInfo();
+            return ni != null && ni.isConnected();
+        }
+        return false;
     }
 
     // Retorna a descrição da situação do roamneio

@@ -1,12 +1,9 @@
 package net.plugsoft.pssysvendas.LibClass;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class QrCodeToken {
     private String cnpj;
     private int romKey;
-    private Date dtExp;
+    private String dtExp;
 
     // Construtor
     public QrCodeToken() { }
@@ -28,19 +25,18 @@ public class QrCodeToken {
         this.romKey = romKey;
     }
 
-    public Date getDtExp() {
+    public String getDtExp() {
         return dtExp;
     }
 
-    public void setDtExp(Date dtExp) {
+    public void setDtExp(String dtExp) {
         this.dtExp = dtExp;
     }
 
     public void getQRCode(String qrCode) throws Exception {
         String[] _qrCode = qrCode.split(":");
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/YYYY");
         setCnpj(_qrCode[1]);
         setRomKey(Integer.getInteger(_qrCode[3]));
-        setDtExp(sdf.parse(_qrCode[5]));
+        setDtExp(_qrCode[5]);
     }
 }
