@@ -11,8 +11,7 @@ import android.net.NetworkInfo;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
+
 import java.util.Calendar;
 import java.util.Date;
 
