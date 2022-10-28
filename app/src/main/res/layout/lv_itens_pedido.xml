@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="0, 1, 2, 3, 4"
+    >
+    <TableRow>
+        <TextView
+            android:id="@+id/txtLvItemPedidoNome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_span="3"
+            android:text="Nome Produto" />
+        <TextView
+            android:id="@+id/txtLvItemPedidoUnidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:text="UN" />
+        <TextView
+            android:id="@+id/txtLvItemPedidoCodigo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:text="9999" />
+
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:id="@+id/txtLvItemPedidoVlUnitario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R$ 0,00"
+            android:textAlignment="textEnd"/>
+        <TextView
+            android:id="@+id/txtLvItemPedidoVlDesconto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:text="R$ 0,00" />
+        <TextView
+            android:id="@+id/txtLvItemPedidoSubTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:text="R$ 0,00" />
+        <TextView
+            android:id="@+id/txtLvItemPedidoQtdade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:text="0,000" />
+        <TextView
+            android:id="@+id/txtLvItemPedidoTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:text="R$ 0,00" />
+    </TableRow>
+</TableLayout>

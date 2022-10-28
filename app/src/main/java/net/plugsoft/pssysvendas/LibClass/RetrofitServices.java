@@ -7,6 +7,11 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface RetrofitServices {
+    // Cidades
+    // Retorna cidade pelo seu código IBGE
+    @GET("Cidades")
+    Call<Cidade> getCidade(@Path(value = "id", encoded = true) int id);
+
     // Empresas
     // Lista as empresas habilitadas na web
     @GET("Empresas")

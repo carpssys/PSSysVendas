@@ -9,11 +9,23 @@
     <ImageButton
         android:id="@+id/imgBtnCamera"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="48dp"
         android:layout_marginTop="32dp"
+        android:background="@color/white"
+        android:contentDescription="Leitor QR Code"
+        android:minWidth="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/white"
         app:srcCompat="@drawable/ic_action_qr_code" />
+
+    <Button
+        android:id="@+id/btnRomaneio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_romaneio"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgBtnCamera" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,4 +20,53 @@
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         android:text="Nome da Empresa" />
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="0, 1, 2"
+        >
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Criado em:" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Recebido em:" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="Situação" />
+
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/txtRomaneioCadastro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                android:text="DD/MM/AAAA" />
+            <TextView
+                android:id="@+id/txtRomaneioEntrada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                android:text="DD/MM/AAAA" />
+            <TextView
+                android:id="@+id/txtRomaneioSituacao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                android:text="Situação" />
+        </TableRow>
+    </TableLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lvRomaneioPedidos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

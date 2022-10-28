@@ -2,8 +2,6 @@ package net.plugsoft.pssysvendas.LibClass;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import static java.time.LocalDate.*;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -16,10 +14,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Util {
-    private final String QR_ROMANEIO = "qr_romaneio";
+    private static String QR_ROMANEIO = "qr_romaneio";
 
     // Grava dados do romaneio a ser entregue
-    public void saveDadosRomaneio(Context context, QrCodeToken qrCodeToken) {
+    public static void saveDadosRomaneio(Context context, QrCodeToken qrCodeToken) {
         SharedPreferences.Editor editor = context.getSharedPreferences(QR_ROMANEIO, MODE_PRIVATE).edit();
         editor.putInt("id", qrCodeToken.getRomKey());
         editor.putString("cnpj", qrCodeToken.getCnpj());
@@ -29,7 +27,7 @@ public class Util {
     }
 
     // Le dados do romaneio vigente
-    public QrCodeToken getDadosRomaneio(Context context) {
+    public static QrCodeToken getDadosRomaneio(Context context) {
         QrCodeToken qrCodeToken = new QrCodeToken();
         SharedPreferences dadosRomaneio = context.getSharedPreferences(QR_ROMANEIO, MODE_PRIVATE);
         if(dadosRomaneio.contains("id")) {

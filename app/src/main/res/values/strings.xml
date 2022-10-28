@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">PSSys Vendas</string>
     <string name="lbl_empresa">Empresa:</string>
+    <string name="lbl_nome_pedido">Nome do Pedido:</string>
+    <string name="lbl_nome_resp_pedido">Nome do Responsável Recebimento:</string>
+    <string name="btn_romaneio">Romaneio</string>
+
 </resources>
