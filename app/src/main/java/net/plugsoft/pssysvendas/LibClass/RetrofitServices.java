@@ -31,6 +31,9 @@ public interface RetrofitServices {
     Call<List<Funcionario>> getFuncionarios(@Path(value = "id", encoded = true) int id);
 
     // Motivo Recusas
+    // Retorna os motivos de uma empresa
+    @GET("MotivosRecusoes/empresa/{id}")
+    Call<List<MotivoRecusa>> getMotivosRecusaByEmpresa(@Path(value = "id", encoded = true) int id);
 
     // Romaneios
     // Retorna o Romaneio pelo seu id
