@@ -1,6 +1,7 @@
 package net.plugsoft.pssysvendas.Controllers;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -27,7 +28,7 @@ public class RomaneioController {
     }
 
     // Retorna o romaneio pelo seu id
-    public void getRomaneio(RomaneioCallback callback, int id) throws Exception {
+    public void getRomaneio(RomaneioCallback callback, int id, String token) throws Exception {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Romaneio.class, new RomaneioDeserializer())
                 .create();
@@ -38,7 +39,7 @@ public class RomaneioController {
 
         RetrofitServices service = retrofit.create(RetrofitServices.class);
 
-        Call<Romaneio> romaneio = service.getRomaneio(id);
+        Call<Romaneio> romaneio = service.getRomaneio(token, id);
         romaneio.enqueue(new Callback<Romaneio>() {
             @Override
             public void onResponse(Call<Romaneio> call, Response<Romaneio> response) {
@@ -51,6 +52,7 @@ public class RomaneioController {
 
             @Override
             public void onFailure(Call<Romaneio> call, Throwable t) {
+                Log.d("error", t.getMessage());
                 Toast.makeText(_context, "ERRO: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

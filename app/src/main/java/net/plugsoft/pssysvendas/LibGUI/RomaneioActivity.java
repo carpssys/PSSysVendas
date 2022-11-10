@@ -84,7 +84,7 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
     public void getRomaneio(int id) {
         try {
             RomaneioController romaneioController = new RomaneioController(this, BASE_URL);
-            romaneioController.getRomaneio(this, id);
+            romaneioController.getRomaneio(this, id, "");
         } catch (Exception e) {
             Toast.makeText(this, "ERRO: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }

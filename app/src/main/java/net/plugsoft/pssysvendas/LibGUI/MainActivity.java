@@ -15,20 +15,29 @@ import android.widget.Toast;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
+import net.plugsoft.pssysvendas.Controllers.AutorizaController;
 import net.plugsoft.pssysvendas.Controllers.EmpresaController;
+import net.plugsoft.pssysvendas.Controllers.RomaneioController;
+import net.plugsoft.pssysvendas.LibClass.Callback.AutorizaCallback;
 import net.plugsoft.pssysvendas.LibClass.Callback.EmpresaCallback;
+import net.plugsoft.pssysvendas.LibClass.Callback.RomaneioCallback;
 import net.plugsoft.pssysvendas.LibClass.Empresa;
 import net.plugsoft.pssysvendas.LibClass.QrCodeToken;
+import net.plugsoft.pssysvendas.LibClass.Romaneio;
+import net.plugsoft.pssysvendas.LibClass.UsuarioToken;
 import net.plugsoft.pssysvendas.LibClass.Util;
 import net.plugsoft.pssysvendas.R;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity  implements AutorizaCallback, RomaneioCallback {
     // "http://gestorapi.plugsoft.net/";
     // "http://192.168.0.188:50110/"
     private final String BASE_URL = "http://gestorapi.plugsoft.net/";
     private AlertDialog alert;
+
+    private String token;
+    private UsuarioToken _usuarioToken;
 
     private ImageButton imgBtn;
     private Button btnRomaneio;
@@ -61,7 +70,8 @@ public class MainActivity extends AppCompatActivity  {
     protected void onStart() {
         super.onStart();
         verificaConectividade();
-        verificaRomaneioValido();
+        getToken();
+        //verificaRomaneioValido();
         //getEmpresa("12801594000119");
         //Intent intent = new Intent(MainActivity.this, RomaneioActivity.class);
         //startActivity(intent);
@@ -81,6 +91,30 @@ public class MainActivity extends AppCompatActivity  {
             });
             alert = builder.create();
             alert.show();
+        }
+    }
+
+    private void getToken() {
+        try {
+            QrCodeToken qrCodeToken = new QrCodeToken();
+            qrCodeToken.setCnpj("12.801.594/0001-19");
+            qrCodeToken.setRomKey(-9999);
+            qrCodeToken.setDtExp("10/11/2022");
+
+            AutorizaController autorizaController = new AutorizaController(this, BASE_URL);
+            autorizaController.postAutoriza(this, qrCodeToken);
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private void getRomaneio() {
+        try {
+            RomaneioController romaneioController = new RomaneioController(this, BASE_URL);
+            romaneioController.getRomaneio(this, 76, token);
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -113,7 +147,7 @@ public class MainActivity extends AppCompatActivity  {
             if(result.getContents() == null) {
                 Toast.makeText(this, "Leitura QR Code cancelada!", Toast.LENGTH_SHORT).show();
                 // Comentar quando for usar a leitura do QR Code
-                String [] strQrCode = ("id:72:cnpj:12801594000119:dtExp:31/10/2022").split(":");
+                String [] strQrCode = ("id:72:cnpj:12801594000119:dtExp:30/11/2022").split(":");
                 saveQrCode(strQrCode);
             } else {
                 String[] strQrCode = result.getContents().split(":");
@@ -139,5 +173,33 @@ public class MainActivity extends AppCompatActivity  {
             }
         }
         Util.saveDadosRomaneio(this, qrCodeToken);
+    }
+
+    @Override
+    public void onPostAutorizaSuccess(UsuarioToken usuarioToken) {
+        if(usuarioToken != null) {
+            _usuarioToken = usuarioToken;
+            token = "Bearer " + _usuarioToken.getToken();
+            getRomaneio();
+        }
+    }
+
+    @Override
+    public void onAutorizaFailure(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+
+
+    @Override
+    public void onGetRomaneioSuccess(Romaneio romaneio) {
+        if(romaneio != null) {
+            Toast.makeText(this, "Nº Romaneio: " + romaneio.getRomKey(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRomaneioFailure(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -3,10 +3,21 @@ package net.plugsoft.pssysvendas.LibClass;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface RetrofitServices {
+    // Autoriza
+    // Retorna mensagem de acesso
+    @GET("Autoriza")
+    Call<String> getAutoriza();
+
+    @POST("Autoriza")
+    Call<UsuarioToken> postAutoriza(@Body QrCodeToken qrCodeToken);
+
     // Cidades
     // Retorna cidade pelo seu código IBGE
     @GET("Cidades")
@@ -15,7 +26,7 @@ public interface RetrofitServices {
     // Empresas
     // Lista as empresas habilitadas na web
     @GET("Empresas")
-    Call<List<Empresa>> getEmpresas();
+    Call<List<Empresa>> getEmpresas(@Header("Authorization") String token);
 
     // Retorna a empresa pelo seu id
     @GET("Empresas/{id}")
@@ -35,7 +46,8 @@ public interface RetrofitServices {
     // Romaneios
     // Retorna o Romaneio pelo seu id
     @GET("Romaneios/{id}")
-    Call<Romaneio> getRomaneio(@Path(value = "id", encoded = true) int id);
+    Call<Romaneio> getRomaneio(@Header("Authorization") String token,
+                               @Path(value = "id", encoded = true) int id);
 
     // Pedidos
     // Retorna os pedidos de um romaneio

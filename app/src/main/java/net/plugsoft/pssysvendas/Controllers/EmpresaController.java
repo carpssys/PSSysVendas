@@ -91,7 +91,7 @@
         }
 
         // Retorna as empresas habilitadas na nuvem
-        public void getEmpresas(final EmpresaCallback callback) throws Exception {
+        public void getEmpresas(final EmpresaCallback callback, String token) throws Exception {
                 Gson gson = new GsonBuilder()
                         .registerTypeAdapter(Empresa.class, new EmpresaDeserializer())
                         .create();
@@ -102,7 +102,7 @@
 
                 RetrofitServices empresaService = retrofit.create(RetrofitServices.class);
 
-                Call<List<Empresa>> empresas = empresaService.getEmpresas();
+                Call<List<Empresa>> empresas = empresaService.getEmpresas(token);
                 empresas.enqueue(new Callback<List<Empresa>>() {
                     @Override
                     public void onResponse(Call<List<Empresa>> call, Response<List<Empresa>> response) {
