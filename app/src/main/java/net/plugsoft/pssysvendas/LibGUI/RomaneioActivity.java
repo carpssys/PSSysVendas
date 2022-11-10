@@ -10,18 +10,22 @@ import android.widget.Toast;
 
 import net.plugsoft.pssysvendas.Controllers.EmpresaController;
 import net.plugsoft.pssysvendas.Controllers.RomaneioController;
+import net.plugsoft.pssysvendas.Controllers.RomaneioPedidoController;
 import net.plugsoft.pssysvendas.LibClass.Callback.EmpresaCallback;
 import net.plugsoft.pssysvendas.LibClass.Callback.RomaneioCallback;
+import net.plugsoft.pssysvendas.LibClass.Callback.RomaneioPedidoCallback;
 import net.plugsoft.pssysvendas.LibClass.Empresa;
 import net.plugsoft.pssysvendas.LibClass.QrCodeToken;
 import net.plugsoft.pssysvendas.LibClass.Romaneio;
+import net.plugsoft.pssysvendas.LibClass.RomaneioPedido;
 import net.plugsoft.pssysvendas.LibClass.RomaneioStatus;
 import net.plugsoft.pssysvendas.LibClass.Util;
 import net.plugsoft.pssysvendas.R;
 
 import java.util.List;
 
-public class RomaneioActivity extends AppCompatActivity implements RomaneioCallback, EmpresaCallback {
+public class RomaneioActivity extends AppCompatActivity implements RomaneioCallback, EmpresaCallback,
+        RomaneioPedidoCallback {
     // Variáveis privadas
     private AlertDialog alert;
     private final String BASE_URL = "http://gestorapi.plugsoft.net/";
@@ -29,6 +33,7 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
 
     private Romaneio _romaneio;
     private Empresa _empresa;
+    private List<RomaneioPedido> _romaneioPedidos;
 
     // Elementos de interface
     private TextView txtEmpresa;
@@ -100,6 +105,16 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
         }
     }
 
+    // Le a lista de pedidos do romaneio
+    public void getPedidos(int id) {
+        try {
+            RomaneioPedidoController romaneioPedidoController = new RomaneioPedidoController(this, BASE_URL);
+            romaneioPedidoController.getRomaneioPedidos(this, id);
+        } catch (Exception e) {
+            Toast.makeText(this, "ERRO: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     // Implementações interfaces
     @Override
     public void onGetRomaneioSuccess(Romaneio romaneio) {
@@ -127,11 +142,26 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
             txtDtCadastro.setText(_romaneio.getRomDataCad());
             txtDtEntrada.setText(_romaneio.getRomDataEnt());
             txtSituacao.setText(Util.getSituacaoRomaneio(_romaneio.getRomStatus()));
+            getPedidos(_romaneio.getRomKey());
         }
     }
 
     @Override
     public void onEmpresaFailure(String message) {
+        Toast.makeText(this, "ERRO: " + message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onGetRomaneioPedidoSuccess(List<RomaneioPedido> romaneioPedidos) {
+        if(!romaneioPedidos.isEmpty()) {
+            _romaneioPedidos = romaneioPedidos;
+        } else {
+            Toast.makeText(this, "Romaneio NÃO possui Pedidos Vinculados!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRomaneioPedidoFailure(String message) {
         Toast.makeText(this, "ERRO: " + message, Toast.LENGTH_SHORT).show();
     }
 }
