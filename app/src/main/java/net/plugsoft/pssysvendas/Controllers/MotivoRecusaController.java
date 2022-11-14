@@ -28,7 +28,7 @@ public class MotivoRecusaController {
         BASE_URL = url;
     }
 
-    public void getMotivosRecusaByEmpresa(MotivoRecusaCallback callback, int id) throws Exception {
+    public void getMotivosRecusaByEmpresa(MotivoRecusaCallback callback, String token, int id) throws Exception {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(MotivoRecusa.class, new MotivoRecusaDeserializer())
                 .create();
@@ -38,7 +38,7 @@ public class MotivoRecusaController {
                 .build();
         RetrofitServices service = retrofit.create(RetrofitServices.class);
 
-        Call<List<MotivoRecusa>> motivosRecusa = service.getMotivosRecusaByEmpresa(id);
+        Call<List<MotivoRecusa>> motivosRecusa = service.getMotivosRecusaByEmpresa(token, id);
 
         motivosRecusa.enqueue(new Callback<List<MotivoRecusa>>() {
             @Override

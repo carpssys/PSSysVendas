@@ -4,5 +4,7 @@
     <string name="lbl_nome_pedido">Nome do Pedido:</string>
     <string name="lbl_nome_resp_pedido">Nome do Responsável Recebimento:</string>
     <string name="btn_romaneio">Romaneio</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

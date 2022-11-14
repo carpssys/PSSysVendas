@@ -70,8 +70,9 @@ public class MainActivity extends AppCompatActivity  implements AutorizaCallback
     protected void onStart() {
         super.onStart();
         verificaConectividade();
-        getToken();
-        //verificaRomaneioValido();
+        //verificaServicoToken();
+        //getToken();
+        verificaRomaneioValido();
         //getEmpresa("12801594000119");
         //Intent intent = new Intent(MainActivity.this, RomaneioActivity.class);
         //startActivity(intent);
@@ -94,6 +95,15 @@ public class MainActivity extends AppCompatActivity  implements AutorizaCallback
         }
     }
 
+    private void verificaServicoToken() {
+        try {
+            AutorizaController autorizaController = new AutorizaController(this, BASE_URL);
+            autorizaController.getAutoriza(this);
+        } catch(Exception e) {
+            Toast.makeText(this, "Erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void getToken() {
         try {
             QrCodeToken qrCodeToken = new QrCodeToken();
@@ -112,7 +122,7 @@ public class MainActivity extends AppCompatActivity  implements AutorizaCallback
     private void getRomaneio() {
         try {
             RomaneioController romaneioController = new RomaneioController(this, BASE_URL);
-            romaneioController.getRomaneio(this, 76, token);
+            romaneioController.getRomaneio(this, token, 76);
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -146,13 +156,12 @@ public class MainActivity extends AppCompatActivity  implements AutorizaCallback
         result -> {
             if(result.getContents() == null) {
                 Toast.makeText(this, "Leitura QR Code cancelada!", Toast.LENGTH_SHORT).show();
-                // Comentar quando for usar a leitura do QR Code
+                // TODO: Comentar quando for usar a leitura do QR Code
                 String [] strQrCode = ("id:72:cnpj:12801594000119:dtExp:30/11/2022").split(":");
                 saveQrCode(strQrCode);
             } else {
                 String[] strQrCode = result.getContents().split(":");
                 saveQrCode(strQrCode);
-
             }
         });
 
@@ -173,6 +182,11 @@ public class MainActivity extends AppCompatActivity  implements AutorizaCallback
             }
         }
         Util.saveDadosRomaneio(this, qrCodeToken);
+    }
+
+    @Override
+    public void onGetAutorizaSuccess(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

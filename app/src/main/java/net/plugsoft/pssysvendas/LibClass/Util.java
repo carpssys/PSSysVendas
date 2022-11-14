@@ -16,6 +16,11 @@ import java.util.Date;
 public class Util {
     private static String QR_ROMANEIO = "qr_romaneio";
 
+    // Recebe cnpj só números retorna formatado
+    public static String formataCnpj(String cnpj) {
+        return cnpj.substring(0, 2) + "." + cnpj.substring(2, 3) + "." + cnpj.substring(5, 3) +
+                "/" + cnpj.substring(8, 4) + "-" + cnpj.substring(12, 2);
+    }
     // Grava dados do romaneio a ser entregue
     public static void saveDadosRomaneio(Context context, QrCodeToken qrCodeToken) {
         SharedPreferences.Editor editor = context.getSharedPreferences(QR_ROMANEIO, MODE_PRIVATE).edit();

@@ -28,7 +28,7 @@ public class RomaneioPedidoController {
         BASE_URL = url;
     }
 
-    public void getRomaneioPedidos(RomaneioPedidoCallback callback, int id ) throws Exception {
+    public void getRomaneioPedidos(RomaneioPedidoCallback callback, String token, int id ) throws Exception {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(RomaneioPedido.class, new RomaneioPedidoDeserializer())
                 .create();
@@ -38,7 +38,7 @@ public class RomaneioPedidoController {
                 .build();
         RetrofitServices service = retrofit.create(RetrofitServices.class);
 
-        Call<List<RomaneioPedido>> romaneioPedidos = service.getRomaneioPedidos(id);
+        Call<List<RomaneioPedido>> romaneioPedidos = service.getRomaneioPedidos(token, id);
 
         romaneioPedidos.enqueue(new Callback<List<RomaneioPedido>>() {
             @Override

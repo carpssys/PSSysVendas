@@ -30,7 +30,7 @@ public class FuncionarioController {
     }
 
     // Retorna os funcionários de uma empresa
-    public void getFuncionarios(final FuncionarioCallback callback, int id) throws Exception {
+    public void getFuncionarios(final FuncionarioCallback callback, String token, int id) throws Exception {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Funcionario.class, new FuncionarioDeserializer())
                 .create();
@@ -40,7 +40,7 @@ public class FuncionarioController {
                 .build();
 
         RetrofitServices service = retrofit.create(RetrofitServices.class);
-        Call<List<Funcionario>> funcionario = service.getFuncionarios(id);
+        Call<List<Funcionario>> funcionario = service.getFuncionarios(token, id);
         funcionario.enqueue(new Callback<List<Funcionario>>() {
             @Override
             public void onResponse(Call<List<Funcionario>> call, Response<List<Funcionario>> response) {

@@ -28,7 +28,7 @@ public class RomaneioController {
     }
 
     // Retorna o romaneio pelo seu id
-    public void getRomaneio(RomaneioCallback callback, int id, String token) throws Exception {
+    public void getRomaneio(RomaneioCallback callback, String token, int id) throws Exception {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Romaneio.class, new RomaneioDeserializer())
                 .create();

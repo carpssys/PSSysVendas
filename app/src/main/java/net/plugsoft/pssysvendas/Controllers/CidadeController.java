@@ -28,7 +28,7 @@ public class CidadeController {
     }
 
     // Retorna a cidade pelo seu código IBGE
-    public void getCidade(final CidadeCallback callback, int cidCodigo) throws Exception {
+    public void getCidade(final CidadeCallback callback, String token, int cidCodigo) throws Exception {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Empresa.class, new CidadeDeserializer())
                 .create();
@@ -38,7 +38,7 @@ public class CidadeController {
                 .build();
         RetrofitServices cidadeService = retrofit.create(RetrofitServices.class);
 
-        Call<Cidade> cidade = cidadeService.getCidade(cidCodigo);
+        Call<Cidade> cidade = cidadeService.getCidade(token, cidCodigo);
         cidade.enqueue(new Callback<Cidade>() {
             @Override
             public void onResponse(Call<Cidade> call, Response<Cidade> response) {

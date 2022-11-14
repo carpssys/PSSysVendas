@@ -31,7 +31,7 @@
         }
 
         // Retorna a empresa pelo seu id
-        public void getEmpresa(final EmpresaCallback callback, int id) throws Exception {
+        public void getEmpresa(final EmpresaCallback callback, String token, int id) throws Exception {
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(Empresa.class, new EmpresaDeserializer())
                     .create();
@@ -42,7 +42,7 @@
 
             RetrofitServices empresaService = retrofit.create(RetrofitServices.class);
 
-            Call<Empresa> empresa = empresaService.getEmpresa(id);
+            Call<Empresa> empresa = empresaService.getEmpresa(token, id);
             empresa.enqueue(new Callback<Empresa>() {
                 @Override
                 public void onResponse(Call<Empresa> call, Response<Empresa> response) {
@@ -61,7 +61,7 @@
         }
 
         // Retorna a empresa pelo CNPJ
-        public void getEmpresa(final EmpresaCallback callback, String cnpj) throws Exception {
+        public void getEmpresa(final EmpresaCallback callback, String token, String cnpj) throws Exception {
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(Empresa.class, new EmpresaDeserializer())
                     .create();
@@ -72,7 +72,7 @@
 
             RetrofitServices empresaService = retrofit.create(RetrofitServices.class);
 
-            Call<Empresa> empresa = empresaService.getEmpresa(cnpj);
+            Call<Empresa> empresa = empresaService.getEmpresa(token, cnpj);
             empresa.enqueue(new Callback<Empresa>() {
                 @Override
                 public void onResponse(Call<Empresa> call, Response<Empresa> response) {

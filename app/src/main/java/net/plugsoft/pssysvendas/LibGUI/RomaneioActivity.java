@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.plugsoft.pssysvendas.Controllers.AutorizaController;
 import net.plugsoft.pssysvendas.Controllers.EmpresaController;
 import net.plugsoft.pssysvendas.Controllers.RomaneioController;
 import net.plugsoft.pssysvendas.Controllers.RomaneioPedidoController;
+import net.plugsoft.pssysvendas.LibClass.Callback.AutorizaCallback;
 import net.plugsoft.pssysvendas.LibClass.Callback.EmpresaCallback;
 import net.plugsoft.pssysvendas.LibClass.Callback.RomaneioCallback;
 import net.plugsoft.pssysvendas.LibClass.Callback.RomaneioPedidoCallback;
@@ -19,17 +21,20 @@ import net.plugsoft.pssysvendas.LibClass.QrCodeToken;
 import net.plugsoft.pssysvendas.LibClass.Romaneio;
 import net.plugsoft.pssysvendas.LibClass.RomaneioPedido;
 import net.plugsoft.pssysvendas.LibClass.RomaneioStatus;
+import net.plugsoft.pssysvendas.LibClass.UsuarioToken;
 import net.plugsoft.pssysvendas.LibClass.Util;
 import net.plugsoft.pssysvendas.R;
 
 import java.util.List;
 
 public class RomaneioActivity extends AppCompatActivity implements RomaneioCallback, EmpresaCallback,
-        RomaneioPedidoCallback {
+        RomaneioPedidoCallback, AutorizaCallback {
     // Variáveis privadas
     private AlertDialog alert;
     private final String BASE_URL = "http://gestorapi.plugsoft.net/";
     private QrCodeToken qrCodeToken;
+    private UsuarioToken _usuarioToken;
+    private String token;
 
     private Romaneio _romaneio;
     private Empresa _empresa;
@@ -56,12 +61,26 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
     protected void onStart() {
         super.onStart();
         verificaRomaneioValido();
-        if(qrCodeToken != null) {
-            getRomaneio(qrCodeToken.getRomKey());
-        }
+        getToken();
+
+
     }
 
     // Métodos privados das funcionalidades
+    // Gera token válido
+    private void getToken() {
+        try {
+            if(qrCodeToken != null) {
+                AutorizaController autorizaController = new AutorizaController(this, BASE_URL);
+                autorizaController.postAutoriza(this, qrCodeToken);
+            } else {
+                throw new Exception("Leia o QR Code para validar Romaneio!");
+            }
+
+        } catch(Exception e) {
+            Toast.makeText(this, "Erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
     private void verificaRomaneioValido() {
         qrCodeToken = Util.getDadosRomaneio(this);
         try {
@@ -89,7 +108,7 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
     public void getRomaneio(int id) {
         try {
             RomaneioController romaneioController = new RomaneioController(this, BASE_URL);
-            romaneioController.getRomaneio(this, id, "");
+            romaneioController.getRomaneio(this, token, id);
         } catch (Exception e) {
             Toast.makeText(this, "ERRO: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -99,7 +118,7 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
     public void getEmpresa(int empKey) {
         try {
             EmpresaController empresaController = new EmpresaController(this, BASE_URL);
-            empresaController.getEmpresa(this, _romaneio.getRomEmpKey());
+            empresaController.getEmpresa(this, token, _romaneio.getRomEmpKey());
         } catch (Exception e) {
             Toast.makeText(this, "ERRO: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -109,7 +128,7 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
     public void getPedidos(int id) {
         try {
             RomaneioPedidoController romaneioPedidoController = new RomaneioPedidoController(this, BASE_URL);
-            romaneioPedidoController.getRomaneioPedidos(this, id);
+            romaneioPedidoController.getRomaneioPedidos(this, token, id);
         } catch (Exception e) {
             Toast.makeText(this, "ERRO: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -163,5 +182,26 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
     @Override
     public void onRomaneioPedidoFailure(String message) {
         Toast.makeText(this, "ERRO: " + message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onGetAutorizaSuccess(String message) {
+
+    }
+
+    @Override
+    public void onPostAutorizaSuccess(UsuarioToken usuarioToken) {
+        if(usuarioToken != null) {
+            _usuarioToken =  usuarioToken;
+            token = "Bearer " + _usuarioToken.getToken();
+            if(qrCodeToken != null) {
+                getRomaneio(qrCodeToken.getRomKey());
+            }
+        }
+    }
+
+    @Override
+    public void onAutorizaFailure(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

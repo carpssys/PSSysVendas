@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 import net.plugsoft.pssysvendas.LibClass.Callback.AutorizaCallback;
 import net.plugsoft.pssysvendas.LibClass.QrCodeToken;
@@ -25,6 +26,35 @@ public class AutorizaController {
     public AutorizaController(Context context, String url) {
         _context = context;
         BASE_URL = url;
+    }
+
+    public void getAutoriza(final AutorizaCallback callback) throws Exception {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(UsuarioToken.class, new UsuarioTokenDeserializer())
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+        RetrofitServices service = retrofit.create(RetrofitServices.class);
+
+        Call<JsonObject> autoriza = service.getAutoriza();
+        autoriza.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    callback.onGetAutorizaSuccess(response.body().getAsString());
+                } else {
+                    callback.onAutorizaFailure("ERRO: " + response.code() + " - " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(_context, "ERRO: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void postAutoriza(final AutorizaCallback callback, QrCodeToken qrCodeToken) throws Exception {
