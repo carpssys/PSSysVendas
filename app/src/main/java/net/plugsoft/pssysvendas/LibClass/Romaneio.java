@@ -54,16 +54,14 @@ public class Romaneio implements Serializable {
     }
 
     public String getRomDataEnt() {
-        return romDataEnt;
-        /*
-        if(romDataEnt.length() > 0) {
+        //return romDataEnt;
+        if(romDataEnt != null) {
             return romDataEnt.substring(8, 10) + "/" + romDataEnt.substring(5, 7) + "/" + romDataEnt.substring(0,4) +
                     " " + romDataEnt.substring(11,16);
         } else {
             return null;
         }
 
-         */
     }
 
     public void setRomDataEnt(String romDataEnt) {

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class RomaneioPedido implements Serializable {
     private int romPedKey;
+    private int romPedStatus;
     private int romPedRomKey;
     private int romPedPedKey;
     private String romPedNomePedido;
@@ -35,6 +36,14 @@ public class RomaneioPedido implements Serializable {
         this.romPedKey = romPedKey;
     }
 
+    public int getRomPedStatus() {
+        return romPedStatus;
+    }
+
+    public void setRomPedStatus(int romPedStatus) {
+        this.romPedStatus = romPedStatus;
+    }
+
     public int getRomPedRomKey() {
         return romPedRomKey;
     }
@@ -60,7 +69,13 @@ public class RomaneioPedido implements Serializable {
     }
 
     public String getRomPedDataRecebimento() {
-        return romPedDataRecebimento;
+        if(romPedDataRecebimento != null) {
+            return romPedDataRecebimento.substring(8, 10) + "/" + romPedDataRecebimento.substring(5, 7) +
+                    "/" + romPedDataRecebimento.substring(0,4) +
+                    " " + romPedDataRecebimento.substring(11,16);
+        } else {
+            return null;
+        }
     }
 
     public void setRomPedDataRecebimento(String romPedDataRecebimento) {
@@ -69,6 +84,7 @@ public class RomaneioPedido implements Serializable {
 
     public String getRomPedNomeRespRecebimento() {
         return romPedNomeRespRecebimento;
+
     }
 
     public void setRomPedNomeRespRecebimento(String romPedNomeRespRecebimento) {
@@ -178,4 +194,6 @@ public class RomaneioPedido implements Serializable {
     public void setRomPedOrdem(int romPedOrdem) {
         this.romPedOrdem = romPedOrdem;
     }
+
+
 }

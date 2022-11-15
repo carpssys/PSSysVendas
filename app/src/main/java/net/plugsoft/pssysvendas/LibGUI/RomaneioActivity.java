@@ -176,6 +176,7 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
             txtEmpresa.setText(_empresa.getEmpNome());
             txtDtCadastro.setText(_romaneio.getRomDataCad());
             txtDtEntrada.setText(_romaneio.getRomDataEnt());
+
             txtSituacao.setText(Util.getSituacaoRomaneio(_romaneio.getRomStatus()));
             getPedidos(_romaneio.getRomKey());
         }

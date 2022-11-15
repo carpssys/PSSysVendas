@@ -35,14 +35,16 @@ public class Util {
     public static QrCodeToken getDadosRomaneio(Context context) {
         QrCodeToken qrCodeToken = new QrCodeToken();
         SharedPreferences dadosRomaneio = context.getSharedPreferences(QR_ROMANEIO, MODE_PRIVATE);
-        if(dadosRomaneio.contains("id")) {
-            qrCodeToken.setRomKey(dadosRomaneio.getInt("id", 0));
-        }
-        if(dadosRomaneio.contains("cnpj")) {
-            qrCodeToken.setCnpj(dadosRomaneio.getString("cnpj", ""));
-        }
-        if(dadosRomaneio.contains("dtExp")) {
-            qrCodeToken.setDtExp(dadosRomaneio.getString("dtExp", "01/01/1900"));
+        if(dadosRomaneio != null) {
+            if(dadosRomaneio.contains("id")) {
+                qrCodeToken.setRomKey(dadosRomaneio.getInt("id", 0));
+            }
+            if(dadosRomaneio.contains("cnpj")) {
+                qrCodeToken.setCnpj(dadosRomaneio.getString("cnpj", ""));
+            }
+            if(dadosRomaneio.contains("dtExp")) {
+                qrCodeToken.setDtExp(dadosRomaneio.getString("dtExp", "01/01/1900"));
+            }
         }
         return qrCodeToken;
     }

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.plugsoft.pssysvendas.LibClass.RomaneioPedido;
+import net.plugsoft.pssysvendas.LibClass.Util;
 import net.plugsoft.pssysvendas.R;
 
 import java.util.ArrayList;
@@ -36,9 +37,11 @@ public class PedidoAdapter  extends RecyclerView.Adapter<PedidoAdapter.PedidoVie
         holder.txtNumPedido.setText(String.valueOf(romaneioPedido.getRomPedNumero()));
         if(romaneioPedido.getRomPedDataRecebimento() != null) {
             holder.txtDtReceb.setText(romaneioPedido.getRomPedDataRecebimento());
+        } else {
+            holder.txtDtReceb.setText("");
         }
 
-        holder.txtSituacao.setText(romaneioPedido.getRomPedComput());
+        holder.txtSituacao.setText(Util.getSituacaoRomaneio(romaneioPedido.getRomPedStatus()));
         holder.txtPedidoNome.setText(romaneioPedido.getRomPedNomePedido());
     }
 
