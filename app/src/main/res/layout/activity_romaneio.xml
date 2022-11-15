@@ -65,8 +65,10 @@
                 android:text="Situação" />
         </TableRow>
     </TableLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lvRomaneioPedidos"
+
+    <FrameLayout
+        android:id="@+id/frame_layout_pedidos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+    </FrameLayout>
 </LinearLayout>

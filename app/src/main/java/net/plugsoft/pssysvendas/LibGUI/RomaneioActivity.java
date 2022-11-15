@@ -2,6 +2,10 @@ package net.plugsoft.pssysvendas.LibGUI;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -12,6 +16,7 @@ import net.plugsoft.pssysvendas.Controllers.AutorizaController;
 import net.plugsoft.pssysvendas.Controllers.EmpresaController;
 import net.plugsoft.pssysvendas.Controllers.RomaneioController;
 import net.plugsoft.pssysvendas.Controllers.RomaneioPedidoController;
+import net.plugsoft.pssysvendas.Fragments.PedidosFragment;
 import net.plugsoft.pssysvendas.LibClass.Callback.AutorizaCallback;
 import net.plugsoft.pssysvendas.LibClass.Callback.EmpresaCallback;
 import net.plugsoft.pssysvendas.LibClass.Callback.RomaneioCallback;
@@ -25,6 +30,8 @@ import net.plugsoft.pssysvendas.LibClass.UsuarioToken;
 import net.plugsoft.pssysvendas.LibClass.Util;
 import net.plugsoft.pssysvendas.R;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RomaneioActivity extends AppCompatActivity implements RomaneioCallback, EmpresaCallback,
@@ -45,6 +52,8 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
     private TextView txtDtCadastro;
     private TextView txtDtEntrada;
     private TextView txtSituacao;
+
+    RecyclerView recyclerViewPedidos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +143,13 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
         }
     }
 
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout_pedidos, PedidosFragment.class, null);
+        fragmentTransaction.commit();
+
+    }
     // Implementações interfaces
     @Override
     public void onGetRomaneioSuccess(Romaneio romaneio) {
@@ -174,6 +190,11 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
     public void onGetRomaneioPedidoSuccess(List<RomaneioPedido> romaneioPedidos) {
         if(!romaneioPedidos.isEmpty()) {
             _romaneioPedidos = romaneioPedidos;
+            // Fazer chamada para o fragment pedidos
+
+            PedidosFragment pedidosFragment = PedidosFragment.newInstance((ArrayList<RomaneioPedido>) _romaneioPedidos);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_pedidos, pedidosFragment).commit();
+            //replaceFragment(pedidosFragment);
         } else {
             Toast.makeText(this, "Romaneio NÃO possui Pedidos Vinculados!", Toast.LENGTH_SHORT).show();
         }

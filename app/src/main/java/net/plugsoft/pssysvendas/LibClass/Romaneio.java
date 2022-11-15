@@ -44,7 +44,9 @@ public class Romaneio implements Serializable {
     }
 
     public String getRomDataCad() {
-        return romDataCad;
+
+        return romDataCad.substring(8,10) + "/" + romDataCad.substring(5,7) + "/" + romDataCad.substring(0,4) +
+                " " + romDataCad.substring(11, 16);
     }
 
     public void setRomDataCad(String romDataCad) {
@@ -53,6 +55,15 @@ public class Romaneio implements Serializable {
 
     public String getRomDataEnt() {
         return romDataEnt;
+        /*
+        if(romDataEnt.length() > 0) {
+            return romDataEnt.substring(8, 10) + "/" + romDataEnt.substring(5, 7) + "/" + romDataEnt.substring(0,4) +
+                    " " + romDataEnt.substring(11,16);
+        } else {
+            return null;
+        }
+
+         */
     }
 
     public void setRomDataEnt(String romDataEnt) {
