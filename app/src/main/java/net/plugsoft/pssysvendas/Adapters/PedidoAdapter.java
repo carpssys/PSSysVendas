@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import net.plugsoft.pssysvendas.LibClass.RecyclerViewClickInterface;
 import net.plugsoft.pssysvendas.LibClass.RomaneioPedido;
 import net.plugsoft.pssysvendas.LibClass.Util;
 import net.plugsoft.pssysvendas.R;
@@ -19,9 +20,13 @@ public class PedidoAdapter  extends RecyclerView.Adapter<PedidoAdapter.PedidoVie
     Context _context;
     ArrayList<RomaneioPedido> pedidos;
 
-    public PedidoAdapter(Context context, ArrayList<RomaneioPedido> listaPedidos) {
+    private RecyclerViewClickInterface recyclerViewClickInterface;
+
+    public PedidoAdapter(Context context, ArrayList<RomaneioPedido> listaPedidos,
+                         RecyclerViewClickInterface recyclerViewClickInterface ) {
         _context = context;
         pedidos = listaPedidos;
+        this.recyclerViewClickInterface = recyclerViewClickInterface;
     }
 
     @NonNull

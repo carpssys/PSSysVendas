@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import net.plugsoft.pssysvendas.Adapters.PedidoAdapter;
 import net.plugsoft.pssysvendas.Controllers.RomaneioController;
 import net.plugsoft.pssysvendas.Controllers.RomaneioPedidoController;
+import net.plugsoft.pssysvendas.LibClass.RecyclerViewClickInterface;
 import net.plugsoft.pssysvendas.LibClass.RomaneioPedido;
 import net.plugsoft.pssysvendas.R;
 
@@ -27,7 +28,7 @@ import java.util.List;
  * Use the {@link PedidosFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PedidosFragment extends Fragment {
+public class PedidosFragment extends Fragment implements RecyclerViewClickInterface {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -88,10 +89,20 @@ public class PedidosFragment extends Fragment {
         recyclerViewPedidos = view.findViewById(R.id.rv_lista_pedidos);
         recyclerViewPedidos.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewPedidos.setHasFixedSize(true);
-        PedidoAdapter pedidoAdapter =new PedidoAdapter(getContext(), pedidos);
+        PedidoAdapter pedidoAdapter =new PedidoAdapter(getContext(), pedidos, this);
 
         recyclerViewPedidos.setAdapter(pedidoAdapter);
         pedidoAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
+    }
+
+    @Override
+    public void onLongItemClick(int position) {
 
     }
 }

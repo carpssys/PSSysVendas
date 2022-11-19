@@ -23,6 +23,7 @@ import net.plugsoft.pssysvendas.LibClass.Callback.RomaneioCallback;
 import net.plugsoft.pssysvendas.LibClass.Callback.RomaneioPedidoCallback;
 import net.plugsoft.pssysvendas.LibClass.Empresa;
 import net.plugsoft.pssysvendas.LibClass.QrCodeToken;
+import net.plugsoft.pssysvendas.LibClass.RecyclerViewClickInterface;
 import net.plugsoft.pssysvendas.LibClass.Romaneio;
 import net.plugsoft.pssysvendas.LibClass.RomaneioPedido;
 import net.plugsoft.pssysvendas.LibClass.RomaneioStatus;
@@ -143,13 +144,6 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
         }
     }
 
-    public void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout_pedidos, PedidosFragment.class, null);
-        fragmentTransaction.commit();
-
-    }
     // Implementações interfaces
     @Override
     public void onGetRomaneioSuccess(Romaneio romaneio) {
@@ -194,7 +188,9 @@ public class RomaneioActivity extends AppCompatActivity implements RomaneioCallb
             // Fazer chamada para o fragment pedidos
 
             PedidosFragment pedidosFragment = PedidosFragment.newInstance((ArrayList<RomaneioPedido>) _romaneioPedidos);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_pedidos, pedidosFragment).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_layout_pedidos, pedidosFragment)
+                    .commit();
             //replaceFragment(pedidosFragment);
         } else {
             Toast.makeText(this, "Romaneio NÃO possui Pedidos Vinculados!", Toast.LENGTH_SHORT).show();
